@@ -121,12 +121,17 @@ def main():
     cat_cache_hit = [cat for cat in cat_urls if cat in cat_cache]
     cat_cache_miss = [cat for cat in cat_urls if cat not in cat_cache]
 
+    click.secho('Loading cats from the cache:')
     for cat in progressbar.progressbar(cat_cache_hit):
         cat_info = Cat(cat, cache=cat_cache[cat])
         cats.append(cat_info)
 
+    click.secho('Pulling cat info from the SPCA website:')
     for cat in progressbar.progressbar(cat_cache_miss):
-        cat_info = Cat(cat)
+        try:
+            cat_info = Cat(cat)
+        except Exception:
+            continue
         cat_cache[cat] = cat_info.to_dict()
         save_cat_cache(cat_cache)
         cats.append(cat_info)
