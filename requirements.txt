@@ -1,0 +1,4 @@
+click
+lxml
+progressbar2
+requests
